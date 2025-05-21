@@ -13,9 +13,9 @@ import (
 // ScalarMulGeneric uses a 2-bit windowed double-and-add algorithm to compute
 // the scalar multilication [s]p on the Bandersnatch curve in twisted Edwards
 // form.
-func ScalarMulGeneric(api frontend.API, p *tEd.Point, s frontend.Variable) *tEd.Point {
+func ScalarMulGeneric(api frontend.API, p *tEd.Point, s frontend.Variable, id twistededwards.ID) *tEd.Point {
 	// get edwards curve curve
-	curve, err := tEd.NewEdCurve(api, twistededwards.BLS12_381_BANDERSNATCH)
+	curve, err := tEd.NewEdCurve(api, id)
 	if err != nil {
 		return nil
 	}
@@ -54,9 +54,9 @@ func ScalarMulGeneric(api frontend.API, p *tEd.Point, s frontend.Variable) *tEd.
 // curve in twisted Edwards form as:
 //
 //	[s1]p + [s2]q = (0,1) with s1 + s2 * s = 0 mod r and |s1|,|s2| < sqrt(r)
-func ScalarMulFakeGLV(api frontend.API, p *tEd.Point, scalar frontend.Variable) *tEd.Point {
+func ScalarMulFakeGLV(api frontend.API, p *tEd.Point, scalar frontend.Variable, id twistededwards.ID) *tEd.Point {
 	// get edwards curve curve
-	curve, err := tEd.NewEdCurve(api, twistededwards.BLS12_381_BANDERSNATCH)
+	curve, err := tEd.NewEdCurve(api, id)
 	if err != nil {
 		return nil
 	}

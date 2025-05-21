@@ -7,6 +7,7 @@ import (
 
 	"github.com/consensys/gnark-crypto/ecc"
 	"github.com/consensys/gnark-crypto/ecc/bls12-381/bandersnatch"
+	jubjub "github.com/consensys/gnark-crypto/ecc/bls12-381/twistededwards"
 	"github.com/consensys/gnark/constraint/solver"
 	"github.com/consensys/gnark/frontend"
 	"github.com/consensys/gnark/std/math/emulated"
@@ -78,10 +79,15 @@ func scalarMulHint(field *big.Int, inputs []*big.Int, outputs []*big.Int) error 
 			P.X.BigInt(outputs[0])
 			P.Y.BigInt(outputs[1])
 		} else {
-			return errors.New("scalarMulHint: unknown curve")
+			var P jubjub.PointAffine
+			P.X.SetBigInt(inputs[0])
+			P.Y.SetBigInt(inputs[1])
+			P.ScalarMultiplication(&P, inputs[2])
+			P.X.BigInt(outputs[0])
+			P.Y.BigInt(outputs[1])
 		}
 	} else {
-		return errors.New("scalarMulHint: unknown curve")
+		return errors.New("scalarMulHint: curve not supported")
 	}
 	return nil
 }
